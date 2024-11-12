@@ -1,0 +1,24 @@
+---
+- name: Basic Ansible Playbook for Learning
+  hosts: main_servers
+  become: yes # Menjalankan tugas dengan sudo
+
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Cek status Nginx sudah berjalan
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Cek status Nginx
+      command: systemctl status nginx
+      register: nginx_status
+
+    - name: Display nginx status output
+      debug:
+        var: nginx_status.stdout_lines
